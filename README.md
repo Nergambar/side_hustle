@@ -1,2 +1,4 @@
 # side_hustle
-gioco? bah
+
+## main.c:
+inizializzate strutture e nome salvato correttamente
