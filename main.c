@@ -42,12 +42,16 @@ int main()
 {
 	all		*this;
 	size_t	size;
+	char	*new_line;
 	int		fd = open("player_info.txt", O_RDWR);
 
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
 	names *name = this->p->name;
-	if ()
+	new_line = get_next_line(fd);
+	if (!new_line)
+		return 1;
+	if (strcmp(new_line, "VOID") == 0)
 	{
 		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
 		scanf("%99s", name->first_name);
@@ -59,6 +63,7 @@ int main()
 		printf("\n\n%zu", size);
 		// break ;
 	}
+	while ()
 	close(fd);
 	freeall(this);
 	return (0);
