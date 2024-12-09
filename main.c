@@ -23,24 +23,43 @@ static void freeall(all *this)
 	free(this);
 }
 
+int write_in_file(char *s, int fd)
+{
+	int i = 0;
+
+	if (!fd)
+		return 0;
+	while (s[i])
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
+	write(fd, "\n", 1);
+	return 1;
+}
+
 int main()
 {
 	all		*this;
 	size_t	size;
+	int		fd = open("player_info.txt", O_RDWR);
 
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
 	names *name = this->p->name;
-	while (1)
+	if ()
 	{
 		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
 		scanf("%99s", name->first_name);
 		size = strlen(name->first_name) + 1;
 		name->first_name = realloc(name->first_name, size);
+		if (!write_in_file(name->first_name, fd))
+			break;
 		printf("\nright, %s, finally you're here", name->first_name);
 		printf("\n\n%zu", size);
-		break ;
+		// break ;
 	}
+	close(fd);
 	freeall(this);
 	return (0);
 }

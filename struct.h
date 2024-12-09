@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 15:14:09 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/07 17:27:45 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:59:50 by alerusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 typedef struct s_classes
 {
