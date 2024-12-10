@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:12:01 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/10 16:09:02 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:12:06 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,23 @@ int	check_N_write(char *s, char *s1, int fd)
 	}
 	free(str);
 	return (1);
+}
+
+char	*get_that_line(int fd, char *s)
+{
+	char *str = get_next_line(fd);
+	char *lultimasponda = NULL;
+	
+	while (str && strncmp(s, str, strlen(s)) != 0)
+	{
+		if (strcmp(s, "") == 0)
+			return (NULL);
+		str = get_next_line(fd);
+	}
+	if (str)
+		lultimasponda = ft_strchr1(str, ' ');
+	else
+		return (NULL);
+	free(str);
+	return(lultimasponda);
 }
