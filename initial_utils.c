@@ -6,13 +6,13 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:12:01 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/09 17:32:27 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:09:02 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gioco.h"
 
-int write_in_file(char *s, int fd)
+int	write_in_file(char *s, int fd, int j)
 {
 	int i = 0;
 
@@ -23,59 +23,36 @@ int write_in_file(char *s, int fd)
 		write(fd, &s[i], 1);
 		i++;
 	}
-	write(fd, "\n", 1);
+	if (j == 1)
+		write(fd, "\n", 1);
 	return 1;
 }
 
-/* char **cnt_mtx(char *s, int fd, char **og)
+int	check_N_write(char *s, char *s1, int fd)
 {
-	int i, j, tmp = 0;
-	if (!og)
-	{
-		char **mtx = (char **)calloc(sizeof(char *), 10);
-		mtx[1] = "Nome: \n";
-		mtx[2] = "Eta: \n";
-		mtx[3] = "Razza: \n";
-		return (mtx);
-	}
+	char *str = get_next_line(fd);
+	if (!fd)
+		return (write(1,"{}",2), 0);
 	else
 	{
-		while(og[j])
+		if (str)
+		while (strncmp(str, s1, strlen(s)) != 0)
 		{
-			if (strncmp(s, "Nome:", 5))
-			{
-				tmp = j;
-				free(og[j]);
-				og[j] = (char *)calloc(sizeof(char) * 10);
-				while (og[j])
-				{
-					og[j] = s[i];
-					j++;
-					i++;
-				}
-				write_in_file(s, fd);
-				j = tmp;
-			}
-			if (strncmp(s, "Eta:", 4))
-			{
-				tmp = j;
-				free(og[j]);
-				og[j] = (char *)calloc(sizeof(char) * 10);
-				while (og[j])
-				{
-					while (j <= 3)
-					{
-						
-					}
-					og[j] = s[i];
-					j++;
-					i++;
-				}
-				write_in_file(s, fd);
-				j = tmp;
-			}
-			if (strncmp(s, "Razza:", 6))
-			j++;
+			str = get_next_line(fd);
+			free(str);
+		}
+		printf("%s", str);
+		if (strcmp(str, s) == 0)
+			return (0);
+		str = realloc(s, sizeof(char));
+		size_t i = 0;
+		while (i <= ft_strlen(str))
+		{
+			write_in_file(s1, fd, 0);
+			write(fd, " ", 1);
+			write_in_file(s, fd, 1);
 		}
 	}
-} */
+	free(str);
+	return (1);
+}

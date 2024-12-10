@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+         #
+#    By: negambar <negambar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/07 15:07:30 by negambar          #+#    #+#              #
-#    Updated: 2024/12/09 17:00:27 by alerusso         ###   ########.fr        #
+#    Updated: 2024/12/10 15:28:50 by negambar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hello_world
 
-SRC = main.c
+SRC = get_next_line.c get_next_line_utils.c main.c initial_utils.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g

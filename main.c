@@ -27,25 +27,39 @@ int main()
 {
 	all		*this;
 	size_t	size;
-	char	*new_line;
 	int		fd = open("player_info.txt", O_RDWR);
+	int		fd1 = open("matrix.txt", O_RDWR);
+	char	*s;
 
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
 	names *name = this->p->name;
-	while(1)
+	// this->mtx = (char **)calloc(sizeof(char *), 2);
+	while (s = get_next_line(fd1))
+	{
+		write_in_file(s, fd1, 1);
+		s = get_next_line(fd1);
+		free(s);
+		if (!s)
+			return(printf("aaaaaaaaaaaaa"), 0);
+	}
+	s = get_next_line(fd);
+	if (strcmp(s, "Name: ") == 0)
 	{
 		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
 		scanf("%99s", name->first_name);
 		size = strlen(name->first_name) + 1;
 		name->first_name = realloc(name->first_name, size);
-		if (!write_in_file(name->first_name, fd))
-			break;
+		if (!write_in_file(name->first_name, fd, 0))
+			printf("something went wrong!\n");
 		printf("\nright, %s, finally you're here", name->first_name);
 		printf("\n\n%zu", size);
-		// break ;
 	}
-	while ()
+	else
+	{
+		name->first_name = this->mtx[0];
+		printf("ah, %s, welcome back!\n", name->first_name);
+	}
 	close(fd);
 	freeall(this);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 15:14:09 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/09 16:59:50 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:44:08 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_player
 typedef struct	all_might
 {
 	player	*p;
+	char	**mtx;
 	int		dices:5; //done
 }	all;
 
