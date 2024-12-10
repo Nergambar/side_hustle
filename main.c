@@ -27,6 +27,7 @@ int main()
 {
 	all		*this;
 	size_t	size;
+	char	*new_line;
 	int		fd = open("player_info.txt", O_RDWR);
 
 	this = (all *)calloc(sizeof(all), 1);
@@ -44,6 +45,7 @@ int main()
 		printf("\n\n%zu", size);
 		// break ;
 	}
+	while ()
 	close(fd);
 	freeall(this);
 	return (0);

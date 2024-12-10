@@ -6,7 +6,7 @@
 /*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/09 16:53:25 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:15:32 by alerusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,4 +15,5 @@
 
 # include "struct.h"
 # include <string.h>
+#include "get_next_line_bonus.h"
 #endif
