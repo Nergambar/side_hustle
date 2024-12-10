@@ -23,21 +23,6 @@ static void freeall(all *this)
 	free(this);
 }
 
-int write_in_file(char *s, int fd)
-{
-	int i = 0;
-
-	if (!fd)
-		return 0;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-	write(fd, "\n", 1);
-	return 1;
-}
-
 int main()
 {
 	all		*this;
@@ -47,7 +32,7 @@ int main()
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
 	names *name = this->p->name;
-	if ()
+	while(1)
 	{
 		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
 		scanf("%99s", name->first_name);
