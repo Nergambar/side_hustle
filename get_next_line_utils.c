@@ -3,143 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 16:13:45 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/09 17:12:51 by alerusso         ###   ########.fr       */
+/*   Created: 2023/11/24 14:44:00 by negambar          #+#    #+#             */
+/*   Updated: 2023/12/14 11:43:27 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-void	*calloc_memcpy(int size, void *dest, const void *src, int ft)
+size_t	ft_strlen(char *s)
 {
-	int		total_size;
-	char	*string_pointer;
-	void	*pointer;
+	size_t	i;
 
-	pointer = NULL;
-	if (ft == CALLOC)
-	{
-		total_size = size * sizeof(char);
-		pointer = malloc(total_size);
-		if (!pointer)
-			return (NULL);
-		string_pointer = (char *)pointer;
-		while (total_size--)
-			*string_pointer++ = 0;
-	}
-	if ((ft == MEMCPY) && ((dest) || (src)))
-	{
-		pointer = dest;
-		while ((size-- > 0) && (dest + 1) && (src + 1))
-		{
-			*((char *)dest++) = *((char *)src++);
-		}
-		*((char *)dest) = 0;
-	}
-	return (pointer);
+	i = 0;
+	if (s == NULL)
+		return (0);
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
-int	find_end_line(size_t *start, char *string)
+char	*ft_strchr(const char *s, int c)
 {
-	int	save;
-	int	index;
+	int		i;
+	char	*str;
 
-	save = -1;
-	index = *start;
-	while (index >= 0)
-	{
-		if ((string[index] == '\n') || (string[index] == '\n'))
-			save = index;
-		index -= 1;
-	}
-	if (save == -1)
-		return (EOF_OR_NEWLINE_NOT_FOUND);
-	*start = (size_t)save;
-	return (EOF_OR_NEWLINE_FOUND);
-}
-
-int	alloc_ft(void **content, void *new_content, size_t start, int mode)
-{
-	size_t	nmemb;
-	void	*re_content;
-
-	nmemb = (start + 1) * sizeof(char);
-	if (mode == MALLOC)
-	{
-		*content = calloc_memcpy(((nmemb + 1) * 2), NULL, NULL, CALLOC);
-		if (!(*content))
-			return (FULL_MEMORY);
-		return (SUCCESS);
-	}
-	if (mode == REALLOC)
-	{
-		re_content = calloc_memcpy((nmemb) * 2, NULL, NULL, CALLOC);
-		if (!(re_content))
-			return (FULL_MEMORY);
-		calloc_memcpy(nmemb, re_content, new_content, MEMCPY);
-		free(*content);
-		*content = re_content;
-		return (SUCCESS);
-	}
-	if ((mode == FREE) && (*content))
-		free(*content);
-	*content = NULL;
-	return (END_OR_CORRUPTION);
-}
-
-void	trim_readbytes(char *buffer)
-{
-	int	old_index;
-	int	new_index;
-
-	if (!buffer)
-	{
-		return ;
-	}
-	old_index = 0;
-	new_index = 0;
-	while (buffer[old_index] != '\0' && buffer[old_index] != '\n')
-	{
-		++old_index;
-	}
-	if (buffer[old_index] == '\n')
-	{
-		++old_index;
-	}
-	while (buffer[old_index] != '\0')
-	{
-		buffer[new_index++] = buffer[old_index++];
-	}
-	buffer[new_index] = '\0';
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*stringona;
-	int		index;
-	int		size;
-
-	if ((!s1) || (!s2))
+	if (s == NULL)
 		return (NULL);
-	index = 0;
-	while (s1[index])
-		++index;
-	size = index;
-	index = 0;
-	while (s2[index])
-		++index;
-	size += index;
-	if (alloc_ft((void **)(&stringona), NULL, size + 1, MALLOC) == FULL_MEMORY)
+	str = (char *)s;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == (char)c)
+			return (&str[i]);
+		i++;
+	}
+	if (str[i] == (char)c)
+		return (&str[i]);
+	return (NULL);
+}
+
+char	*ft_substr(char const *s, unsigned int start, char stop_char)
+{
+	char	*str;
+	size_t	i;
+	size_t	len;
+
+	if (s == NULL || s[0] == '\0')
 		return (NULL);
-	index = -1;
-	while (s1[++index])
-		stringona[index] = s1[index];
-	size = -1;
-	while (s2[++size])
-		stringona[index++] = s2[size];
-	free(s1);
-	free(s2);
-	return (stringona);
+	len = 0;
+	while (s[len] != stop_char && s[len] != '\0')
+		len++;
+	str = (char *)ft_calloc(((len - start) + 2), sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (s && s[start] != stop_char && s[start] != '\0')
+		str[i++] = s[start++];
+	if (s && s[start] == stop_char)
+		str[i++] = '\n';
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_calloc(size_t count, size_t size)
+{
+	char	*str;
+	size_t	i;
+
+	str = (char *)malloc(sizeof(char) * (count * size));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < (count * size))
+	{
+		str[i] = '\0';
+		i++;
+	}
+	return (str);
 }
