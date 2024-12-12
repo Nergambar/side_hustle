@@ -34,16 +34,17 @@ int main()
 	names *name = this->p->name;
 	if (!s)
 		return(printf("aaaaaaaaaaaaa"), 0);
-	if (strcmp(s, "") != 0)
+	if (strncmp(s, "Name: ", 6) != 0)
+		return (printf("fuck off"), 1);
+	else if (strncmp(s, "Name: \n", 7) == 0)
 	{
-		if (strcmp(s, "Name: ") != 0)
-			return (printf("fuck off"), 1);
 		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
 		this->p->name->first_name = calloc(sizeof(char), 100);
 		scanf("%99s", name->first_name);
 		size = strlen(name->first_name) + 1;
+		lseek(fd, 5, SEEK_SET);
 		this->p->name->first_name = realloc(this->p->name->first_name, size);
-		if (!write_in_file(name->first_name, fd, 0))
+		if (!write_in_file(name->first_name, fd, 1))
 			printf("something went wrong!\n");
 		printf("\nright, %s, finally you're here", name->first_name);
 		printf("\n\n%zu", size);
@@ -53,11 +54,11 @@ int main()
 	{
 		close(fd);
 		open("player_info.txt", O_RDWR);
-		name->first_name = get_that_line(fd, "Name: ");
-		get_that_line(fd, "Name: ");
+		name->first_name = get_that_line(fd, "Name: ", s);
 		if (!name->first_name)
 			return (free(s), freeall(this), 1);
-		printf("ah, %s, welcome back!\n", name->first_name);
+		name->first_name = strtrim(name->first_name, "\n");
+		printf("Ah, yes,%s, welcome back!\n", name->first_name);
 	}
 	;
 	close(fd);
