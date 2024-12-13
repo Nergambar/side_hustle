@@ -32,22 +32,25 @@ int main()
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
 	names *name = this->p->name;
+	size_t ages = this->p->age;
 	if (!s)
-		return(printf("aaaaaaaaaaaaa"), 0);
-	if (strncmp(s, "Name: ", 6) != 0)
-		return (printf("fuck off"), 1);
-	else if (strncmp(s, "Name: \n", 7) == 0)
 	{
-		printf("Narrator: Welcome, uh.. fuck, what's your name again?");
+		printf("Narrator: Welcome, uh.. fuck, what's your name again? ");
 		this->p->name->first_name = calloc(sizeof(char), 100);
 		scanf("%99s", name->first_name);
 		size = strlen(name->first_name) + 1;
-		lseek(fd, 5, SEEK_SET);
 		this->p->name->first_name = realloc(this->p->name->first_name, size);
-		if (!write_in_file(name->first_name, fd, 1))
+		char full[101];
+		snprintf(full, sizeof(full), "Name: %s\n", name->first_name);
+		if (!write_in_file(full, fd, 0))
 			printf("something went wrong!\n");
 		printf("\nright, %s, finally you're here", name->first_name);
 		printf("\n\n%zu", size);
+		printf("I'm sorry to ask, dear friend, but how old are you exactly? ");
+		scanf("%zu", &ages);
+		snprintf(full, sizeof(full), "Age: %zu\n", ages);
+		if (!write_in_file(full, fd, 0))
+			printf("something went wrong!\n");
 		close(fd);
 	}
 	else
@@ -60,7 +63,6 @@ int main()
 		name->first_name = strtrim(name->first_name, "\n");
 		printf("Ah, yes,%s, welcome back!\n", name->first_name);
 	}
-	;
 	close(fd);
 	freeall(this);
 	return (0);

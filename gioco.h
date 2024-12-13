@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/12 17:53:38 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:34:05 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "get_next_line.h"
 
 int		write_in_file(char *s, int fd, int j);
-int		check_N_write(char *s, char *s1, int fd);
 char	*get_that_line(int fd, char *s, char *s1);
 char	*strtrim(char const *s1, char const *set);
 char	*substr(char const *s, unsigned int start, size_t len);

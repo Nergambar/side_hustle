@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:12:01 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/12 17:53:34 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:34:18 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,6 @@ int	write_in_file(char *s, int fd, int j)
 	if (j == 1)
 		write(fd, "\n", 1);
 	return 1;
-}
-
-int	check_N_write(char *s, char *s1, int fd)
-{
-	char *str = get_next_line(fd);
-	if (!fd)
-		return (write(1,"{}",2), 0);
-	else
-	{
-		if (str)
-		while (strncmp(str, s1, strlen(s)) != 0)
-		{
-			str = get_next_line(fd);
-			free(str);
-		}
-		printf("%s", str);
-		if (strcmp(str, s) == 0)
-			return (0);
-		str = realloc(s, sizeof(char));
-		size_t i = 0;
-		while (i <= ft_strlen(str))
-		{
-			write_in_file(s1, fd, 0);
-			write(fd, " ", 1);
-			write_in_file(s, fd, 1);
-		}
-	}
-	free(str);
-	return (1);
 }
 
 char	*get_that_line(int fd, char *s, char *s1)
