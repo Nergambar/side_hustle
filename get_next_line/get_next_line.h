@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:43:14 by negambar          #+#    #+#             */
-/*   Updated: 2023/12/14 11:50:50 by negambar         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:12:35 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-char	*ft_strchr(const char *s, int c);
-size_t	ft_strlen(char *s);
-char	*ft_substr(char const *s, unsigned int start, char stop_char);
-char	*ft_calloc(size_t count, size_t size);
+char	*gnl_strchr(const char *s, int c);
+size_t	gnl_strlen(char *s);
+char	*gnl_substr(char const *s, unsigned int start, char stop_char);
+char	*gnl_calloc(size_t count, size_t size);
 char	*ft_get_line(int fd, char *buffer, char *nextl);
 char	*get_next_line(int fd);
 char	*ft_str(char *s);

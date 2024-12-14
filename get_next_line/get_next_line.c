@@ -6,21 +6,21 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:43:57 by negambar          #+#    #+#             */
-/*   Updated: 2023/12/18 16:52:13 by negambar         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:47:46 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(char *s)
+char	*gnl_strdup(char *s)
 {
 	char	*str;
 	int		i;
 	int		j;
 
 	i = 0;
-	j = ft_strlen(s) + 1;
-	str = (char *)ft_calloc((j), sizeof(char));
+	j = gnl_strlen(s) + 1;
+	str = (char *)gnl_calloc((j), sizeof(char));
 	if (!str)
 		return (NULL);
 	while (s[i] != '\0')
@@ -39,8 +39,8 @@ char	*ft_join_free(char *s1, char *s2)
 	int		j;
 
 	if (!s1)
-		return (ft_strdup(s2));
-	str = (char *)ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+		return (gnl_strdup(s2));
+	str = (char *)gnl_calloc((gnl_strlen(s1) + gnl_strlen(s2) + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	i = -1;
@@ -63,7 +63,7 @@ char	*ft_str(char *s)
 	if (s == NULL)
 		return (NULL);
 	slen = 0;
-	tlen = ft_strlen(s);
+	tlen = gnl_strlen(s);
 	while ((s[slen]) != '\n' && (s[slen]))
 		slen++;
 	if (s[slen] == '\0')
@@ -71,7 +71,7 @@ char	*ft_str(char *s)
 		free (s);
 		return (NULL);
 	}
-	buf = (char *)ft_calloc((tlen - slen + 2), sizeof(char));
+	buf = (char *)gnl_calloc((tlen - slen + 2), sizeof(char));
 	if (!buf)
 		return (NULL);
 	tlen = 0;
@@ -100,7 +100,7 @@ char	*ft_get_line(int fd, char *buffer, char *nextl)
 			break ;
 		buffer[read_check] = '\0';
 		nextl = ft_join_free(nextl, buffer);
-		if (ft_strchr(buffer, '\n'))
+		if (gnl_strchr(buffer, '\n'))
 			break ;
 	}
 	return (nextl);
@@ -120,11 +120,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	res = NULL;
-	buffer = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	buffer = (char *)gnl_calloc((BUFFER_SIZE + 1), sizeof(char));
 	nextl = ft_get_line(fd, buffer, nextl);
 	free (buffer);
 	buffer = NULL;
-	res = ft_substr(nextl, 0, '\n');
+	res = gnl_substr(nextl, 0, '\n');
 	nextl = ft_str(nextl);
 	return (res);
 }
@@ -135,13 +135,13 @@ char	*get_next_line(int fd)
 	int i;
 
 	i = 0;
-	fd = open("", O_RDONLY);
+	fd = open("testing.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		close(fd);
 		return (0);
 	}
-	while (i < 13)
+	while (i < 32)
 	{
 		char *s = get_next_line(fd);
 		printf("%s", s);
@@ -150,5 +150,4 @@ char	*get_next_line(int fd)
 	}
 	close(fd);
 	return 0;
-} 
- */
+} */

@@ -6,13 +6,13 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:44:00 by negambar          #+#    #+#             */
-/*   Updated: 2023/12/14 11:43:27 by negambar         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:07:25 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *s)
+size_t	gnl_strlen(char *s)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*gnl_strchr(const char *s, int c)
 {
 	int		i;
 	char	*str;
@@ -44,7 +44,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_substr(char const *s, unsigned int start, char stop_char)
+char	*gnl_substr(char const *s, unsigned int start, char stop_char)
 {
 	char	*str;
 	size_t	i;
@@ -55,7 +55,7 @@ char	*ft_substr(char const *s, unsigned int start, char stop_char)
 	len = 0;
 	while (s[len] != stop_char && s[len] != '\0')
 		len++;
-	str = (char *)ft_calloc(((len - start) + 2), sizeof(char));
+	str = (char *)gnl_calloc(((len - start) + 2), sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -67,7 +67,7 @@ char	*ft_substr(char const *s, unsigned int start, char stop_char)
 	return (str);
 }
 
-char	*ft_calloc(size_t count, size_t size)
+char	*gnl_calloc(size_t count, size_t size)
 {
 	char	*str;
 	size_t	i;
