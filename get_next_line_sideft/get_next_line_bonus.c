@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:13:11 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/13 14:59:05 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/14 11:31:39 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,10 @@ char	*get_next_line(int fd, int reset)
 	string = get_next_line_main_function(fd, buffer[fd]);
 	if (!string)
 		return (NULL);
-	alloc_ft((void **)&string, (void *)string, ft_strlen(string), REALLOC);
+	alloc_ft((void **)&string, (void *)string, strlen(string), REALLOC);
 	if (!string)
 		return (NULL);
-	//string[ft_strlen(string)] = 0;
+	//string[strlen(string)] = 0;
 	return (string);
 }
 

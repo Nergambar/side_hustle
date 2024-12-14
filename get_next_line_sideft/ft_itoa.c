@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:46:20 by alerusso          #+#    #+#             */
-/*   Updated: 2024/11/30 14:37:31 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/14 11:30:08 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
-#include "libft.h"
 #define UN_BOTTO 100
 
 static char	*alloc_string(char *allocated_string, int num, int *index);
@@ -71,7 +70,7 @@ static char	*alloc_string(char *allocated_string, int num, int *index)
 {
 	if (num < 0)
 		*index += 1;
-	allocated_string = (char *)ft_calloc((*index) + 2, sizeof(char));
+	allocated_string = (char *)calloc((*index) + 2, sizeof(char));
 	if (!allocated_string)
 		return (NULL);
 	if (num < 0)

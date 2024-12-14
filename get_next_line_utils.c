@@ -6,11 +6,11 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:44:00 by negambar          #+#    #+#             */
-/*   Updated: 2024/11/25 11:07:25 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/14 11:27:53 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "gnl.h"
 
 size_t	gnl_strlen(char *s)
 {

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:41:41 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/13 16:22:29 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/14 15:35:12 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line_bonus.h"
+# include "get_next_line_bonus.h"
+# include "../gioco.h"
 
 char	*get_n_line(int fd, int n);
 int		write_fucking_line(int fd, int line_num, int position, char *string);
@@ -19,40 +19,36 @@ int		reset_fd(int fd, char *name);
 char	*find_line(int flag, ...);
 void	initiate_file(int fd, char *num);
 
-void initiate_file(int fd, char *num)
+static void hold_space(int counter, int fd)
+{
+	while (counter--)
+		write(fd, " ", 1);
+	write(fd, "\n", 1);
+}
+void	initiate_file(int fd, char *name)
 {
 	int	counter;
 	int	temp;
 	
-	counter = MIDWORDS_LEN * 6;
-	temp = MIDWORDS_LEN * 6;
+	counter = MIDWORDS_LEN * 10;
+	temp = MIDWORDS_LEN * 10;
 	write(fd, "[PLAYER_", 8);
-	write(fd, num, ft_strlen(num));
+	write(fd, name, strlen(name));
+	free(name);
 	write(fd, "]", 1);
 	write(fd, "\n\n", 2);
 	write(fd, "Name = ", 7);
-	while (counter--)
-		write(fd, " ", 1);
-	counter = temp;
-	write(fd, "\n", 1);
+	hold_space(counter, fd);
 	write(fd, "Age = ", 7);
-	while (counter--)
-		write(fd, " ", 1);
-	counter = temp;
-	write(fd, "\n", 1);
+	hold_space(counter, fd);
 	write(fd, "Class = ", 8);
-	while (counter--)
-		write(fd, " ", 1);
-	counter = temp;
-	write(fd, "\n", 1);
+	hold_space(counter, fd);
+	write(fd, "Species = ", 11);
+	hold_space(counter, fd);
 	write(fd, "Friends = ", 10);
-	while (counter--)
-		write(fd, " ", 1);
-	counter = temp;
-	write(fd, "\n", 1);
-	write(fd, "[ENDPLAYER_1]\n", 14);
+	hold_space(counter, fd);
+	write(fd, "_ENDPLAYER_1]\n", 14);
 	write(fd, "EOF\n", 4);
-	free(num);
 }
 
 int		write_fucking_line(int fd, int line_num, int position, char *string)
@@ -63,10 +59,6 @@ int		write_fucking_line(int fd, int line_num, int position, char *string)
 
 	if ((fd == -1) || (!string))
 		return (-1);
-	/*close(fd);
-	fd = open("updated_pokedex.txt", O_RDWR);
-	if (fd == -1)
-		return (-1);*/
 	temp = get_n_line(fd, line_num - 1);
 	if (!temp)
 		return (-1);
@@ -79,9 +71,7 @@ int		write_fucking_line(int fd, int line_num, int position, char *string)
 			return (-1);
 	}
 	if ((buffer[0] == '\n') || (buffer[0] == '\0'))
-	{
 		return (-1);
-	}
 	while ((position--))
 	{
 		if (read(fd, buffer, 1) <= 0)
@@ -92,9 +82,7 @@ int		write_fucking_line(int fd, int line_num, int position, char *string)
 				return (-1);
 		}
 		if ((buffer[0] == '\n') || (buffer[0] == '\0'))
-		{
 			return (-1);
-		}
 	}
 	counter = 0;
 	while (counter != MIDWORDS_LEN)
@@ -137,7 +125,7 @@ char	*find_line(int flag, ...)
 	search = va_arg(list, char *);
 	while ((search) && (string))
 	{
-		while (ft_strnstr(string, search, INT_MAX) == NULL)
+		while (strstr(string, search) == NULL)
 		{
 			free(string);
 			string = get_next_line(fd, 0);
@@ -184,7 +172,7 @@ int	reset_fd(int fd, char *name)
 	return (0);
 }
 
-int	main()
+/* int	main()
 {
 	char	*string;
 	int		fd;
@@ -242,3 +230,4 @@ int	main()
 	write_fucking_line(fd, line_num, 1, "Marco");
 	return (0);
 }
+ */

@@ -6,13 +6,19 @@
 #    By: negambar <negambar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/07 15:07:30 by negambar          #+#    #+#              #
-#    Updated: 2024/12/12 16:43:42 by negambar         ###   ########.fr        #
+#    Updated: 2024/12/14 15:33:28 by negambar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hello_world
 
-SRC = get_next_line.c get_next_line_utils.c main.c initial_utils.c ft_strtrim.c
+SRC = gnl.c get_next_line_utils.c main.c initial_utils.c ft_strtrim.c \
+	second_step.c \
+	get_next_line_sideft/get_next_line_bonus.c \
+	get_next_line_sideft/get_next_line_utils_bonus.c \
+	get_next_line_sideft/ft_itoa.c \
+	get_next_line_sideft/ft_memset.c \
+	get_next_line_sideft/ft_memcmp.c get_next_line_sideft/main.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g

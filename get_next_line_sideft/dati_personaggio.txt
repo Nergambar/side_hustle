@@ -1,8 +1,0 @@
-[PLAYER_1]
-
-Name = Marco_____,                                                 
-Age = 27________,                                                  
-Class = Bard______,                                                 
-Friends = Marco_____, Beppe_____,                                     
-[ENDPLAYER_1]
-EOF

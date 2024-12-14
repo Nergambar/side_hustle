@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   gnl.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -25,7 +25,7 @@ size_t	gnl_strlen(char *s);
 char	*gnl_substr(char const *s, unsigned int start, char stop_char);
 char	*gnl_calloc(size_t count, size_t size);
 char	*ft_get_line(int fd, char *buffer, char *nextl);
-char	*get_next_line(int fd);
+char	*gnl(int fd);
 char	*ft_str(char *s);
 
 #endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   gnl.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "gnl.h"
 
 char	*gnl_strdup(char *s)
 {
@@ -106,7 +106,7 @@ char	*ft_get_line(int fd, char *buffer, char *nextl)
 	return (nextl);
 }
 
-char	*get_next_line(int fd)
+char	*gnl(int fd)
 {
 	char		*res;
 	static char	*nextl = NULL;
@@ -143,7 +143,7 @@ char	*get_next_line(int fd)
 	}
 	while (i < 32)
 	{
-		char *s = get_next_line(fd);
+		char *s = gnl(fd);
 		printf("%s", s);
 		i++;
 		free(s);

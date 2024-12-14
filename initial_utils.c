@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:12:01 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/13 14:34:18 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:19:53 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,20 @@ int	write_in_file(char *s, int fd, int j)
 
 char	*get_that_line(int fd, char *s, char *s1)
 {
+	reset_fd(fd, "player_info.txt");
 	char *lultimasponda = NULL;
-	
-	while (s1 && strncmp(s, s1, strlen(s)) != 0)
+	s1 = get_next_line(fd, 0);
+	while (s1)
 	{
-		if (strcmp(s, "") == 0)
-			return (NULL);
-		s1 = get_next_line(fd);
-		s1 = strtrim(s1, "\n");
-		if (!s1)
-			return (NULL);
+		if (strncmp(s, s1, strlen(s)) == 0)
+		{
+			lultimasponda = strtrim(s1, "\n,_ ");
+			free(s1);
+			lultimasponda = ft_strchr1(lultimasponda, ' ');
+			break ;
+		}
+		free(s1);
+		s1 = get_next_line(fd, 0);
 	}
-	lultimasponda = ft_strchr1(s1, ' ');
-	free(s1);
 	return(lultimasponda);
 }

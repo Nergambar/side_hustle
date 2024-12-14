@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:13:36 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/13 14:47:37 by alerusso         ###   ########.fr       */
+/*   Updated: 2024/12/14 11:49:02 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@
 # include <malloc.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "libft.h"
+# include "../gioco.h"
 
+char	*ft_itoa(int num);
+
+void	initiate_file(int fd, char *name);
 char	*get_next_line(int fd, int reset);
 char	*get_next_line_main_function(int fd, char buffer[BUFFER_SIZE + 1]);
 char	*get(char **store_bytes, char buffer[BUFFER_SIZE + 1], int nl, int fd);
