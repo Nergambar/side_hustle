@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 15:14:09 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/14 11:25:03 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/17 14:47:14 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_player
 	unsigned int	respect;	
 	classes			*job; //16 classi
 	unsigned int	races:1; // 2 razze iniziale
+	char			*class;
 	int				allignment:3;
 }	player;
 

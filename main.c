@@ -66,7 +66,7 @@ Come back when you're older.\n\n\n\n\n");
 	sleep(3);
 	system("clear");
     close(fd);
-	// second_step();
+	second_step(this, fd);
 }
 
 void reset(all *this, char *s)
@@ -98,15 +98,20 @@ int main(int ac, char **av)
 	{
 		char *mynameis;
 		name->first_name = get_that_line(fd, "Name = ", s);
+		this->p->class = get_that_line(fd, "Class = ", s);
 		// printf("\ns:%s", s);
 		if (!name->first_name)
 			return (free(s), freeall(this), 1);
 		mynameis = name->first_name;
-		name->first_name = strtrim(mynameis, "\n");
+		name->first_name = strtrim(mynameis, "\n ");
+		char *class;
+		class = this->p->class;
+		this->p->class = strtrim(class, "\n ");
 		free(mynameis);
+		free(class);
 		if (!name->first_name)
 			return (free(s), freeall(this), 1);
-		printf("Ah, yes,%s, welcome back!\n", name->first_name);
+		printf("Ah, yes, welcome back %s, the %s!\n", name->first_name, this->p->class);
 	}
 	else if (strcmp(av[1], "reset") == 0)
 		return(reset(this, s), 1);

@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/14 15:47:38 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:34:48 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ char	*get_that_line(int fd, char *s, char *s1);
 char	*strtrim(char const *s1, char const *set);
 char	*substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr1(const char *s, int c);
-
+void	reset(all *this, char *s);
 char	*get_n_line(int fd, int n);
 int		write_fucking_line(int fd, int line_num, int position, char *string);
 int		reset_fd(int fd, char *name);
 char	*find_line(int flag, ...);
 void	initiate_file(int fd, char *num);
 
+int		second_step(all *this, int fd);
+int		check_for_class(char *s);
 #endif
