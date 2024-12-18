@@ -19,6 +19,7 @@ static void freeall(all *this)
 	free(this->p->name->last_name);
 	free(this->p->name->m_nicknames);
 	free(this->p->name);
+	free(this->p->class);
 	free(this->p);
 	free(this);
 }
@@ -91,33 +92,34 @@ int main(int ac, char **av)
 
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
-	names *name = this->p->name;
+	char *first = this->p->name->first_name;
 	if (!s)
 		set_basics(this, fd);
 	else if (s && ac == 1)
 	{
 		char *mynameis;
-		name->first_name = get_that_line(fd, "Name = ", s);
+		first = get_that_line(fd, "Name = ", s);
 		this->p->class = get_that_line(fd, "Class = ", s);
 		// printf("\ns:%s", s);
-		if (!name->first_name)
+		if (!first)
 			return (free(s), freeall(this), 1);
-		mynameis = name->first_name;
-		name->first_name = strtrim(mynameis, "\n ");
+		mynameis = first;
+		first = strtrim(mynameis, "\n ");
 		char *class;
 		class = this->p->class;
 		this->p->class = strtrim(class, "\n ");
 		free(mynameis);
 		free(class);
-		if (!name->first_name)
+		if (!first)
 			return (free(s), freeall(this), 1);
-		printf("Ah, yes, welcome back %s, the %s!\n", name->first_name, this->p->class);
+		printf("Ah, yes, welcome back %s, the %s!\n", first, this->p->class);
 	}
 	else if (strcmp(av[1], "reset") == 0)
 		return(reset(this, s), 1);
 	else if (strcmp(av[1], "debug") == 0)
 		fd = open("player_info.txt", O_TRUNC);
 	free(s);
+	free(first);
 	close(fd);
 	freeall(this);
 	return (0);

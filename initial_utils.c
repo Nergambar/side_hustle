@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:12:01 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/14 16:56:11 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:20:19 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ char	*get_that_line(int fd, char *s, char *s1)
 	{
 		if (strncmp(s, s1, strlen(s)) == 0)
 		{
-			lultimasponda = strtrim(s1, "\n,_ ");
+			char *temp = strtrim(s1, "\n,_ ");
 			free(s1);
-			lultimasponda = ft_strchr1(lultimasponda, ' ');
+			if (!temp)
+				break;
+			lultimasponda = ft_strchr1(temp, ' ');
+			free(temp);
 			break ;
 		}
 		free(s1);

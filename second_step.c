@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:29:56 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/17 17:00:12 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:10:30 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_for_class(char *s)
 	int	fd1 = open("classes.txt", O_RDONLY);
 	// reset_fd(fd1, "classes.txt");
 	char *str = get_next_line(fd1, 0);
-	while (str && strncmp(str, s, strlen(str) - 1) != 0)
+	while (str && strncmp(str, s, strlen(s)) != 0)
 	{
 		free(str);
 		str = get_next_line(fd1, 0);
@@ -57,5 +57,9 @@ int	second_step(all *this, int fd)
 		printf("\nnice choice!");
 		return (1);
 	}
+	char *printf = "why not try a different one?\n";
+	write(1, printf, strlen(printf));
+	sleep(1);
+	free(str);
 	return (second_step(this, fd), 0);
 }

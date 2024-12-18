@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/17 16:34:48 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:52:33 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "struct.h"
 # include <string.h>
 # include <limits.h>
+# include <signal.h>
 # include "gnl.h"
 # include "get_next_line_sideft/get_next_line_bonus.h"
 
