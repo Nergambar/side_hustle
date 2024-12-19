@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 15:14:09 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/18 18:08:06 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:19:54 by alerusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_sheet
 	unsigned int	proficiency:7;
 	unsigned int	ispiration:7;
 	unsigned int	speed:6;
-	unsigned int	armor_class:7;
+	unsigned int	armour_class:7;
 	unsigned int	initiative:6;
 	unsigned int	max_hitpoints;
 	unsigned int	cur_hitpoints;
@@ -91,12 +91,12 @@ typedef struct	s_random_encounter
 	int				honor;
 	unsigned int	respect;
 	classes			*job; 
-	unsigned int	races:1;
+	unsigned int	races:7;
 	char			*class;
 	int				allignment:3;
+	sheet			*sheet;
 	
-	
-}	t_random_encounter;
+}	random_encounter;
 typedef struct	all_might
 {
 	player	*p;
