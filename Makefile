@@ -6,13 +6,14 @@
 #    By: negambar <negambar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/07 15:07:30 by negambar          #+#    #+#              #
-#    Updated: 2024/12/14 15:33:28 by negambar         ###   ########.fr        #
+#    Updated: 2024/12/19 10:49:34 by negambar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hello_world
 
 SRC = gnl.c get_next_line_utils.c main.c initial_utils.c ft_strtrim.c \
+	utils.c \
 	second_step.c \
 	get_next_line_sideft/get_next_line_bonus.c \
 	get_next_line_sideft/get_next_line_utils_bonus.c \

@@ -12,7 +12,7 @@ static void initall(all *this)
 	this->p->name->m_nicknames = malloc(sizeof(char) * 100);
 }
 
-static void freeall(all *this)
+void freeall(all *this)
 {
 	free(this->p->job);
 	free(this->p->name->first_name);
@@ -45,6 +45,7 @@ static void set_basics(all *this, int fd)
     int line_num = atoi(line_num_str);
     free(line_num_str);
 	reset_fd(fd, "player_info.txt");
+	normalise_text(this->p->name->first_name);
     write_fucking_line(fd, line_num, 1, this->p->name->first_name);
     printf("\nright, %s, finally you're here\n", this->p->name->first_name);
     printf("I'm sorry to ask, dear friend, but how old are you exactly? ");
@@ -64,7 +65,7 @@ Come back when you're older.\n\n\n\n\n");
         return;
     }
 	write(1, "very well, then, shall we start?", 33);
-	sleep(3);
+	sleep(2);
 	system("clear");
     close(fd);
 	second_step(this, fd);
@@ -88,7 +89,7 @@ int main(int ac, char **av)
 {
 	all		*this;
 	int		fd = open("player_info.txt", O_RDWR);
-	char	*s = gnl(fd);
+	char	*s = get_next_line(fd, 0);
 
 	this = (all *)calloc(sizeof(all), 1);
 	initall(this);
@@ -117,7 +118,10 @@ int main(int ac, char **av)
 	else if (strcmp(av[1], "reset") == 0)
 		return(reset(this, s), 1);
 	else if (strcmp(av[1], "debug") == 0)
-		fd = open("player_info.txt", O_TRUNC);
+	{
+		mi_serve(this);
+		and_so_the_story_starts(this, 0);
+	}
 	free(s);
 	free(first);
 	close(fd);

@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:41:41 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/14 15:35:12 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:20:18 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,18 @@ int		write_fucking_line(int fd, int line_num, int position, char *string)
 	return (line_num);
 }
 
+/*
+Flags list
+Find = 0 ---> finds where a line is located in a file text (in a string format)
+Get  = 1 ---> Finds and give back the content of a line
+Move = 2 ---> Moves the cursor to the line
+
+Example:
+find_line(GET, "[BEHOLDER]", "max_hp = ")
+
+In this way, find_line finds before the line "[BEHOLDER]", then "max_hp".
+If it finds both, it return the line of the last content, else return NULL.
+*/
 char	*find_line(int flag, ...)
 {
 	va_list	list;
