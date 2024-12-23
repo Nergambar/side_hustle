@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/19 10:54:18 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:13:36 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,9 @@ void	initiate_file(int fd, char *num);
 void	normalise_text(char *s);
 int		second_step(all *this, int fd);
 int		check_for_class(char *s);
-void	and_so_the_story_starts(all *this, int a);
+void	and_so_the_story_starts(all *this,int fd, int a);
 int		mi_serve(all *this);
 void	freeall(all *this);
-
-
-
-
+void	miservequesta(all *this, int fd);
 
 #endif

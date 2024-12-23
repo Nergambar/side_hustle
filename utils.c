@@ -6,7 +6,7 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:46:50 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/18 17:59:18 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:30:08 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,13 @@ int mi_serve(all *this)
 	if (!first)
 		return (free(s), freeall(this), 1);
 	return(0);
+}
+
+void	miservequesta(all *this, int fd)
+{
+	reset_fd(fd, "player_info.txt");
+	char *thisl = find_line(FIND, fd, "Name = ", NULL);
+	int num = atoi(thisl);
+	reset_fd(fd, "player_info.txt");
+	write_fucking_line(fd, num, 1, this->p->name->first_name);
 }

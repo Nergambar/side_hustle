@@ -120,7 +120,7 @@ int main(int ac, char **av)
 	else if (strcmp(av[1], "debug") == 0)
 	{
 		mi_serve(this);
-		and_so_the_story_starts(this, 0);
+		and_so_the_story_starts(this, fd, 0);
 	}
 	free(s);
 	free(first);

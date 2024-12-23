@@ -6,13 +6,13 @@
 /*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:29:56 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/19 11:06:15 by negambar         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:17:49 by negambar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gioco.h"
 
-void and_so_the_story_starts(all *this, int a);
+void and_so_the_story_starts(all *this, int fd, int a);
 
 int	check_for_class(char *s)
 {
@@ -58,7 +58,7 @@ int	second_step(all *this, int fd)
 		normalise_text(this->p->class);
 		write_fucking_line(fd, n, 1, this->p->class);
 		printf("\nnice choice!");
-		return (and_so_the_story_starts(this, 0), 1);
+		return (and_so_the_story_starts(this, fd, 0), 1);
 	}
 	char *printf = "why not try a different one?\n";
 	write(1, printf, strlen(printf));
@@ -67,7 +67,7 @@ int	second_step(all *this, int fd)
 	return (second_step(this, fd), 0);
 }
 
-static void choice_2(all *this)
+static void choice_2(all *this, int fd)
 {
 	printf("Ah, how do you remember to be called like?\n");
 	char *new_name;
@@ -77,10 +77,11 @@ static void choice_2(all *this)
 	normalise_text(new_name);
 	new_name = strtrim(new_name, "\n ");
 	strcpy(this->p->name->first_name, new_name);
+	miservequesta(this, fd);
 	printf("I see, I see.");
 }
 
-void and_so_the_story_starts(all *this, int tryingsmt)
+void and_so_the_story_starts(all *this, int fd, int tryingsmt)
 {
 	char *name = "???";
 	if (tryingsmt == 0)
@@ -93,7 +94,7 @@ void and_so_the_story_starts(all *this, int tryingsmt)
 	{
 		if (tryingsmt == 0 || tryingsmt == 2)
 			printf("%s: Well, I have no idea either to be honest! *laughs*\n", name);
-		and_so_the_story_starts(this, 2);
+		and_so_the_story_starts(this, fd, 2);
 	}
 	if (choice == 2)
 	{
@@ -107,7 +108,7 @@ void and_so_the_story_starts(all *this, int tryingsmt)
 		if (choice == 1)
 			printf("I'm sorry to offend you, and truly hope you'll forgive this error.\n");
 		if (choice == 2)
-			choice_2(this);
+			choice_2(this, fd);
 		if (choice == 3)
 			return;
 	}
@@ -116,6 +117,6 @@ void and_so_the_story_starts(all *this, int tryingsmt)
 		if (tryingsmt == 0 || tryingsmt == 2)
 			printf("%s: not that talkative, are we huh?\n", name);
 		else
-			and_so_the_story_starts(this, 1);
+			and_so_the_story_starts(this, fd, 1);
 	}
 }
