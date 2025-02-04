@@ -6,11 +6,13 @@
 /*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:41:41 by alerusso          #+#    #+#             */
-/*   Updated: 2024/12/20 18:01:12 by alerusso         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:50:32 by alerusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "get_next_line_bonus.h"
+# include <string.h>
+# include <stdlib.h>
 # include "../gioco.h"
 
 int		find_number_line(int fd, char *filename, int num_search, ...);
@@ -21,6 +23,83 @@ int		reset_fd(int fd, char *name);
 char	*find_line(int flag, int fd, int num_search, va_list list);
 void	initiate_file(int fd, char *num);
 int		write_short_line(int fd, char *filename, int line_num, int position, char *string);
+char	**ft_split(char const *s, char c);
+
+static size_t	ft_strlen(const char *string)
+{
+	int	counter;
+
+	counter = 0;
+	while (string[counter])
+		++counter;
+	return (counter);
+}
+
+static char	*ft_strdup(const char *str)
+{
+	int		n;
+	char	*camillo;
+
+	if (!str)
+		return (NULL);
+	n = 0;
+	while (str[n] != '\0')
+		++n;
+	camillo = NULL;
+	n += 1;
+	camillo = (char *)calloc(n, sizeof(char));
+	if (camillo == NULL)
+		return (0);
+	n = 0;
+	while (str[n] != '\0')
+	{
+		camillo[n] = str[n];
+		++n;
+	}
+	return (camillo);
+}
+
+static int	ft_realloc(void **content, size_t nmemb, size_t size)
+{
+	void	*re_content;
+
+	re_content = calloc(nmemb, size);
+	if (!(re_content))
+		return (1);
+	memcpy(re_content, *content, nmemb - size);
+	free(*content);
+	*content = re_content;
+	return (0);
+}
+
+static int	cut_string(char **string, size_t start, size_t end)
+{
+	unsigned int	temp;
+	unsigned int	string_len;
+
+	if (!(string) || !(*string) || (start > end) || (start == strlen(*string)))
+		return (1);
+	end++;
+	string_len = strlen(*string);
+	temp = start;
+	while ((start != end) && ((*string)[start] != 0))
+		(*string)[start++] = 0;
+	end = start;
+	start = temp;
+	temp = 0;
+	while (end != string_len)
+	{
+		(*string)[start + temp] = (*string)[end + temp];
+		--string_len;
+		++temp;
+	}
+	if (temp != 0)
+		(*string)[temp] = 0;
+	end = strlen(*string);
+	if (ft_realloc((void **)string, end + 1, sizeof(char)))
+		return (1);
+	return (0);
+}
 
 // Deprecata (da me stesso).
 char	*line_fgm(int flag, int fd, int num_search, ...)
@@ -132,13 +211,10 @@ initiate_file riceve:
 void	initiate_file(int fd, char *name)
 {
 	int	counter;
-	int	temp;
 	
 	counter = MIDWORDS_LEN * 10;
-	temp = MIDWORDS_LEN * 10;
 	write(fd, "[PLAYER_", 8);
 	write(fd, name, strlen(name));
-	free(name);
 	write(fd, "]", 1);
 	write(fd, "\n\n", 2);
 	write(fd, "Name = ", 7);
@@ -153,6 +229,307 @@ void	initiate_file(int fd, char *name)
 	hold_space(counter, fd);
 	write(fd, "_ENDPLAYER_1]\n", 14);
 	write(fd, "EOF\n", 4);
+}
+
+/*
+	set_maximum_word_len contiene il numero massimo di
+	caratteri che write_line può scrivere (che è anche
+	il minimo numero di caratteri, vedi "write_line").
+	Il valore è definito da un int statico.
+
+	Riceve come argomento un int.
+
+	Se è positivo o zero, modifica l'attuale limite
+	di caratteri di write_line, e lo restituisce.
+	
+	Altrimenti, ritorna il limite attuale senza fare
+	altro.
+*/
+int	set_maximum_word_len(int new_len)
+{
+	static int	maximum_word_len = MIDWORDS_LEN;
+
+	if (new_len < 0)
+		return (maximum_word_len);
+	maximum_word_len = new_len;
+	return (maximum_word_len); 
+}
+
+void	free_matrix(char **matrix)
+{
+	int	index;
+
+	index = 0;
+	if (!matrix)
+		return ;
+	while (matrix[index])
+	{
+		if (matrix[index])
+			free(matrix[index]);
+		matrix[index] = NULL;
+		++index;
+	}
+	if (matrix)
+		free(matrix);
+}
+
+/*	read_line riceve:
+1) fd;
+2) il nome del file;
+3) il numero della linea.
+	
+	Legge le stringhe all'interno del file, salvandole in una  
+	matrice, ad una data linea (line_num).
+	Esempio:
+	read_all_line(3, "file.txt", 2); //Legge la linea 2.
+1. [NPC_list]
+2. Nome = Mario______, Rossi______,  // Legge e torna "Mario", "Rossi".
+
+Ritorno:
+		La matrice richiesta, senza , e _ finali;
+		NULL, se la ricerca fallisce oppure in caso di errori di malloc.
+*/
+char	**read_all_line(int fd, char *filename, int line_num)
+{
+	int		counter;
+	char	*temp;
+	char	**matrix;
+	int		position;
+
+	if ((fd == -1) || (line_num < 0))
+		return (NULL);
+	reset_fd(fd, filename);
+	if (line_num != 1)
+	{
+		move_cursor(fd, filename, line_num);
+	}
+	temp = get_next_line(fd, 0);
+	if (!temp)
+		return (NULL);
+	matrix = ft_split(temp, ',');// Splitta la linea ottenuta con ft_split
+	free(temp);
+	if ((!matrix) || !(*matrix))
+		return (NULL);
+	counter = 0;
+	if (!matrix[1])// Verifica che la posizione richiesta esista.
+	{
+		return (free_matrix(matrix), NULL);
+	}
+	while ((matrix[0][counter] != '=') || (matrix[0][counter + 1] != ' '))
+		++counter;
+	++counter;
+	cut_string(&(matrix[0]), 0, counter);
+	if (!matrix[0])
+		return (free_matrix(matrix), NULL);
+	position = 0;
+	while (matrix[position]) // sistema tutte le stringhe.
+	{
+		counter = 0;
+		while (matrix[position][counter])// Elimina ',' e '_' di troppo.
+			++counter;
+		if (counter == 0)
+			return (free_matrix(matrix), NULL);
+		counter -= 1;
+		while (matrix[position][counter] == '_')
+			--counter;
+		++counter;
+		cut_string(&(matrix[position]), counter, ft_strlen(matrix[position]));
+		if (matrix[position][0] == ' ')
+			cut_string(&(matrix[position]), 0, 0);
+		if (matrix[position][0] == '\n')
+		{
+			free(matrix[position]);
+			matrix[position] = NULL;
+		}
+		++position;
+	}
+	return (matrix);
+}
+
+/*	read_line riceve:
+1) fd;
+2) il nome del file;
+3) il numero della linea;
+4) la posizione, nella linea, nel quale inserire la stringa.
+	
+	Legge una stringa all'interno del file, ad una data linea (line_num),
+	ad una certa posizione orizzontale (position).
+	Esempio:
+	read_line(3, "file.txt", 2, 2); //Legge alla linea 2, posizione 2.
+1. [NPC_list]
+2. Nome = Mario______, Rossi______,  // Legge e torna "Rossi".
+
+Ritorno:
+		La stringa richiesta, senza , e _ finali;
+		NULL, se la ricerca fallisce oppure in caso di errori di malloc.
+*/
+char	*read_line(int fd, char *filename, int line_num, int position)
+{
+	int		counter;
+	char	*temp;
+	char	**matrix;
+
+	if ((fd == -1) || (position < 0) || (line_num < 0))
+		return (NULL);
+	reset_fd(fd, filename);
+	if (line_num != 1)
+	{
+		move_cursor(fd, filename, line_num);
+	}
+	temp = get_next_line(fd, 0);
+	if (!temp)
+		return (NULL);
+	matrix = ft_split(temp, ',');// Splitta la linea ottenuta con ft_split
+	free(temp);
+	if ((!matrix) || !(*matrix))
+		return (NULL);
+	counter = 0;
+	while (counter != position)// Verifica che la posizione richiesta esista.
+	{
+		if (!(matrix[counter]))
+			return (free_matrix(matrix), NULL);
+		if (counter == 0)
+		{
+			counter++;
+			if (!(matrix[counter]))
+				return (free_matrix(matrix), NULL);
+			if (counter == position)
+				break ;
+		}
+		++counter;
+	}
+	if (position == 0)// Se position è zero, torna quello che c'è prima di '='
+	{
+		while ((matrix[0][counter] != '=') || (matrix[0][counter + 1] != ' '))
+			++counter;
+		++counter;
+		cut_string(matrix, counter, strlen(matrix[0]));
+		temp = ft_strdup(matrix[0]);
+		return (free_matrix(matrix), temp);
+	}
+	if (position == 1)//Se position è uno, elimina quello che c'è prima di "= "
+	{
+		while ((matrix[0][counter] != '=') || (matrix[0][counter + 1] != ' '))
+			++counter;
+		++counter;
+		cut_string(&(matrix[0]), 0, counter);
+		temp = ft_strdup(matrix[0]);
+		return (free_matrix(matrix), temp);
+	}
+	counter = 0;
+	position--;
+	while (matrix[position][counter])// Elimina ',' e '_' di troppo.
+		++counter;
+	if (counter == 0)
+		return (free_matrix(matrix), NULL);
+	--counter;
+	while (matrix[position][counter] == '_')
+		--counter;
+	++counter;
+	cut_string(&(matrix[position]), counter, ft_strlen(matrix[position]));
+	temp = ft_strdup(matrix[position]);
+	if (temp[0] == ' ')
+		cut_string(&temp, 0, 0);
+	return (free_matrix(matrix), temp);
+}
+
+/*
+	write_short_line riceve:
+1) fd;
+2) il nome del file;
+3) il numero della linea;
+4) la posizione, nella linea, nel quale inserire la stringa;
+5) la stringa da inserire.
+	
+	Scrive una stringa all'interno del file, ad una data linea (line_num),
+	ad una certa posizione orizzontale (position).
+	Esempio:
+	write_fucking_line(3, "file. txt", 2, 2, "Rossi"); //Scrive alla linea 2, posizione 2.
+1. [NPC_list]
+2. Nome = Mario______, Rossi______, 
+
+Ritorno:
+		Il numero della linea dove si trova la corrispondenza;
+		-1, se la ricerca fallisce oppure in caso di errori di malloc.
+
+	Write_line ha un limite massimo di caratteri (10).
+	Può essere cambiato in fase di esecuzione, con la
+	funzione "set_maximum_word_len".
+*/
+int		write_line(int fd, char *filename, int line_num, int position, char *string)
+{
+	int		counter;
+	char	*temp;
+	int		maximum_word_len;
+
+	if ((fd == -1) || (!string) || (position < 0) || (line_num < 0))
+		return (-1);
+	reset_fd(fd, filename);
+	if (line_num != 1)
+	{
+		while ("move the cursor to the start of the line")
+		{
+			if (line_num == 1)
+				break ;
+			temp = get_next_line(fd, 1);
+			if (!temp)
+				return (-1);
+			if (*temp == '\n')
+				--line_num;
+			free(temp);
+		}
+	}
+	temp = get_next_line(fd, 1);
+	if (!temp)
+		return (-1);
+	while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
+	{
+		free(temp);
+		temp = get_next_line(fd, 1);
+	if (!temp)
+		return (-1);
+	}
+	if ((temp[0] == '\n') || (temp[0] == '\0'))
+		return (free(temp), -1);
+	while ((position--))
+	{
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
+			return (-1);
+		while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
+		{
+			free(temp);
+			temp = get_next_line(fd, 1);
+			if (!temp)
+				return (-1);
+		}
+		if ((temp[0] == '\n') || (temp[0] == '\0'))
+			return (free(temp), -1);
+	}
+	counter = 0;
+	maximum_word_len = set_maximum_word_len(-1);
+	while (counter != maximum_word_len)
+	{
+		if (*string)
+		{
+			write(fd, string, 1);
+			string++;
+		}
+		else
+			write(fd, "_", 1);
+		++counter;
+	}
+	write (fd, ", ", 1);
+	while ((temp[0] == '\n') || (temp[0] == '\0'))
+	{
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
+			return (-1);
+	}
+	free(temp);
+	return (0);
 }
 
 /*
@@ -178,7 +555,6 @@ Ritorno:
 */
 int		write_short_line(int fd, char *filename, int line_num, int position, char *string)
 {
-	char	buffer[1];
 	int		counter;
 	char	*temp;
 
@@ -187,32 +563,45 @@ int		write_short_line(int fd, char *filename, int line_num, int position, char *
 	reset_fd(fd, filename);
 	if (line_num != 1)
 	{
-		temp = get_n_line(fd, line_num - 1);
-		if (!temp)
-			return (-1);
-		
-		free(temp);
+		while ("move the cursor to the start of the line")
+		{
+			if (line_num == 1)
+				break ;
+			temp = get_next_line(fd, 1);
+			if (!temp)
+				return (-1);
+			if (*temp == '\n')
+				--line_num;
+			free(temp);
+		}
 	}
-	if (read(fd, buffer, 1) <= 0)
+	temp = get_next_line(fd, 1);
+	if (!temp)
 		return (-1);
-	while ((buffer[0] != ' ') && (buffer[0] != '\n') && (buffer[0] != '\0'))
+	while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
 	{
-		if (read(fd, buffer, 1) <= 0)
-			return (-1);
-	}
-	if ((buffer[0] == '\n') || (buffer[0] == '\0'))
+		free(temp);
+		temp = get_next_line(fd, 1);
+	if (!temp)
 		return (-1);
+	}
+	if ((temp[0] == '\n') || (temp[0] == '\0'))
+		return (free(temp), -1);
 	while ((position--))
 	{
-		if (read(fd, buffer, 1) <= 0)
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
 			return (-1);
-		while ((buffer[0] != ' ') && (buffer[0] != '\n') && (buffer[0] != '\0'))
+		while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
 		{
-			if (read(fd, buffer, 1) <= 0)
+			free(temp);
+			temp = get_next_line(fd, 1);
+			if (!temp)
 				return (-1);
 		}
-		if ((buffer[0] == '\n') || (buffer[0] == '\0'))
-			return (-1);
+		if ((temp[0] == '\n') || (temp[0] == '\0'))
+			return (free(temp), -1);
 	}
 	counter = 0;
 	while (counter != SHORTWORDS_LEN)
@@ -227,12 +616,15 @@ int		write_short_line(int fd, char *filename, int line_num, int position, char *
 		++counter;
 	}
 	write (fd, ", ", 1);
-	while ((buffer[0] == '\n') || (buffer[0] == '\0'))
+	while ((temp[0] == '\n') || (temp[0] == '\0'))
 	{
-		if (read(fd, buffer, 1) <= 0)
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
 			return (-1);
 	}
-	return (line_num);
+	free(temp);
+	return (0);
 }
 
 /*
@@ -258,7 +650,6 @@ Ritorno:
 */
 int		write_fucking_line(int fd, char *filename, int line_num, int position, char *string)
 {
-	char	buffer[1];
 	int		counter;
 	char	*temp;
 
@@ -267,32 +658,45 @@ int		write_fucking_line(int fd, char *filename, int line_num, int position, char
 	reset_fd(fd, filename);
 	if (line_num != 1)
 	{
-		temp = get_n_line(fd, line_num - 1);
-		if (!temp)
-			return (-1);
-		
-		free(temp);
+		while ("move the cursor to the start of the line")
+		{
+			if (line_num == 1)
+				break ;
+			temp = get_next_line(fd, 1);
+			if (!temp)
+				return (-1);
+			if (*temp == '\n')
+				--line_num;
+			free(temp);
+		}
 	}
-	if (read(fd, buffer, 1) <= 0)
+	temp = get_next_line(fd, 1);
+	if (!temp)
 		return (-1);
-	while ((buffer[0] != ' ') && (buffer[0] != '\n') && (buffer[0] != '\0'))
+	while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
 	{
-		if (read(fd, buffer, 1) <= 0)
-			return (-1);
-	}
-	if ((buffer[0] == '\n') || (buffer[0] == '\0'))
+		free(temp);
+		temp = get_next_line(fd, 1);
+	if (!temp)
 		return (-1);
+	}
+	if ((temp[0] == '\n') || (temp[0] == '\0'))
+		return (free(temp), -1);
 	while ((position--))
 	{
-		if (read(fd, buffer, 1) <= 0)
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
 			return (-1);
-		while ((buffer[0] != ' ') && (buffer[0] != '\n') && (buffer[0] != '\0'))
+		while ((temp[0] != ' ') && (temp[0] != '\n') && (temp[0] != '\0'))
 		{
-			if (read(fd, buffer, 1) <= 0)
+			free(temp);
+			temp = get_next_line(fd, 1);
+			if (!temp)
 				return (-1);
 		}
-		if ((buffer[0] == '\n') || (buffer[0] == '\0'))
-			return (-1);
+		if ((temp[0] == '\n') || (temp[0] == '\0'))
+			return (free(temp), -1);
 	}
 	counter = 0;
 	while (counter != MIDWORDS_LEN)
@@ -307,12 +711,15 @@ int		write_fucking_line(int fd, char *filename, int line_num, int position, char
 		++counter;
 	}
 	write (fd, ", ", 1);
-	while ((buffer[0] == '\n') || (buffer[0] == '\0'))
+	while ((temp[0] == '\n') || (temp[0] == '\0'))
 	{
-		if (read(fd, buffer, 1) <= 0)
+		free(temp);
+		temp = get_next_line(fd, 1);
+		if (!temp)
 			return (-1);
 	}
-	return (line_num);
+	free(temp);
+	return (0);
 }
 
 /*
@@ -328,25 +735,17 @@ int		write_fucking_line(int fd, char *filename, int line_num, int position, char
 */
 int	move_cursor(int fd, char *filename, int line_num)
 {
-	char	*string;
 	char	*search;
 
 	if ((fd == -1) || (!filename) || (line_num < 1))
 		return (-1);
 	reset_fd(fd, filename);
-	string = get_next_line(fd, 0);
-	if (!string)
-	{
-		return (-1);
-	}
-	free(string);
-	reset_fd(fd, filename);
-	if (line_num != 1)
-	{
-		search = get_n_line(fd, line_num - 1);
-		if (search)
-			free(search);
-	}
+	if (line_num == 1)
+		return (0);
+	search = get_n_line(fd, line_num - 1);
+	if (!search)
+		return (1);
+	free(search);
 	return (0);
 }
 
@@ -399,6 +798,12 @@ char	*find_line(int flag, int fd, int num_search, va_list list)
 	return ("Metti le flag ammodo, mongoloide");
 }
 
+/*
+	Richiama get_next_line n volte.
+	
+	Torna NULL se non trova la linea o se fallisce.
+	Altrimenti, torna la linea richiesta.
+*/
 char	*get_n_line(int fd, int n)
 {
 	char	*line;
@@ -415,6 +820,10 @@ char	*get_n_line(int fd, int n)
 	return (line);
 }
 
+/*
+	reset_fd reimposta read all'inizio del file, e contemporaneamente
+	resetta il buffer di get_next_line.
+*/
 int	reset_fd(int fd, char *name)
 {
 	get_next_line(fd, RESET);
@@ -482,14 +891,16 @@ int	reset_fd(int fd, char *name)
 	return (0);
 }
  */
+
 /*
 int main()
 {
 	char	*filename = "enemies.txt";
-	int fd = open(filename, O_RDWR | O_CREAT, 0644);
+	int fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (1);
-	int line_num = find_number_line(fd, "enemies.txt", 1, "name = ");
+	initiate_file(fd, "Rayquaza");
+	int line_num = find_number_line(fd, "enemies.txt", 1, "Name = ");
 	write_fucking_line(fd, filename, line_num++, 1, "Ale");//name
 	write_fucking_line(fd, filename, line_num++, 1, "33");//age
 	write_fucking_line(fd, filename, line_num++, 1, "10");//honor
@@ -502,4 +913,73 @@ int main()
 	write_fucking_line(fd, filename, line_num++, 1, "10");//dexterity
 	close(fd);
 	return (0);
-}*/
+}
+*/
+/*
+int	main()
+{
+	int fd = open("available_types.txt", O_RDONLY);
+	int line_num = find_number_line(fd, "available_types.txt", 2, "[LIST]", "unsigned int");
+	if (line_num == -1)
+		printf("Male");
+	else
+		printf("\n%d", find_number_line(fd, "available_types.txt", 2, "[LIST]", "unsigned int"));
+}
+*/
+
+/*
+int	main()
+{
+	char	*line;
+	void	*save;
+	char	**all_line;
+	int		position;
+	char	*filename = "default_values.txt";
+
+	int	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (1);
+	int	line_num = find_number_line(fd, filename, 2, "[LIST]", "char**");
+	if (line_num == -1)
+		return (1);
+	position = 7;
+	line = read_line(fd, filename, line_num, position);
+	if (line == NULL)
+		printf("sad\n");
+	else
+		printf("\n Linea %d, dato numero %d: %s\n", line_num, position, line);
+	free(line);
+		position = 2;
+	line = read_line(fd, filename, line_num, position);
+	if (line == NULL)
+		printf("sad\n");
+	else
+		printf("\n Linea %d, dato numero %d: %s\n", line_num, position, line);
+	free(line);
+		position = 330;
+	line = read_line(fd, filename, line_num, position);
+	if (line == NULL)
+		printf("sad\n");
+	else
+		printf("\n Linea %d, dato numero %d: %s\n", line_num, position, line);
+	free(line);
+	all_line = read_all_line(fd, filename, line_num);
+	if (!all_line)
+		return (1);
+	save = (void *)all_line;
+	position = 0;
+	while (*all_line)
+	{
+		if (all_line == NULL)
+			printf("sad\n");
+		else
+			printf("\n Linea %d, dato numero %d: %s\n", line_num, position, *all_line);
+		position++;
+		free(*all_line);
+		++all_line;
+	}
+	printf("\n Linea %d, dato numero %d: %s\n", line_num, position, *all_line);
+	free(save);
+	return (0);
+}
+*/

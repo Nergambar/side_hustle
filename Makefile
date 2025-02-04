@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: negambar <negambar@student.42.fr>          +#+  +:+       +#+         #
+#    By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/07 15:07:30 by negambar          #+#    #+#              #
-#    Updated: 2024/12/19 10:49:34 by negambar         ###   ########.fr        #
+#    Updated: 2025/02/04 13:54:11 by alerusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hello_world
+
+FILE_UTILS = get_next_line_sideft/manage_file_ft.a
 
 SRC = gnl.c get_next_line_utils.c main.c initial_utils.c ft_strtrim.c \
 	utils.c \
@@ -31,7 +33,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 		@echo Linking... $(NAME)
-		$(CC) $(OBJ) -o $(NAME) $(CFLAGS) 
+		$(CC) $(OBJ) $(FILE_UTILS) -o $(NAME) $(CFLAGS) 
 #		$(MINILBX)
 %.o:%.c
 	@echo Compiling $<...

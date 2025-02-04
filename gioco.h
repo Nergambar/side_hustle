@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gioco.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: negambar <negambar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alerusso <alerusso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:58:13 by negambar          #+#    #+#             */
-/*   Updated: 2024/12/19 15:13:36 by negambar         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:48:02 by alerusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ char	*strtrim(char const *s1, char const *set);
 char	*substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr1(const char *s, int c);
 void	reset(all *this, char *s);
+//		FUNZIONI PER GET DI ALE:
+int		find_number_line(int fd, char *filename, int num_search, ...);
+int		move_cursor(int fd, char *filename, int line_num);
 char	*get_n_line(int fd, int n);
-int		write_fucking_line(int fd, int line_num, int position, char *string);
+int		write_fucking_line(int fd, char *filename, int line_num, int position, char *string);
 int		reset_fd(int fd, char *name);
-char	*find_line(int flag, ...);
+char	*find_line(int flag, int fd, int num_search, va_list list);
 void	initiate_file(int fd, char *num);
+int		write_short_line(int fd, char *filename, int line_num, int position, char *string);
+//		------------------------
 void	normalise_text(char *s);
 int		second_step(all *this, int fd);
 int		check_for_class(char *s);
